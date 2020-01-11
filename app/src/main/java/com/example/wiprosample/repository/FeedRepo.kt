@@ -23,6 +23,7 @@ class FeedRepo:KoinComponent {
             emit(ResponseWrapper.Success(response))
         }catch (e:Exception){
           e.printStackTrace()
+
           emit(ResponseWrapper.Error(e.message?:context.getString(R.string.something_went_wrong)))
         }
     }
