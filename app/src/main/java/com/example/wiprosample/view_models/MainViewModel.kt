@@ -20,7 +20,7 @@ class MainViewModel:ViewModel(),KoinComponent {
     private val _feedData = MutableLiveData<ResponseWrapper<MutableList<Feed>>>()
     val feedList: LiveData<ResponseWrapper<MutableList<Feed>>> = _feedData
 
-    fun fetchFeed() = viewModelScope.launch {
+    fun fetchFeed(forceRefresh:Boolean) = viewModelScope.launch {
         _feedData.value?:feedRepo.fetchFeeds().collect {
             _feedData.value = it
         }
