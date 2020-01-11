@@ -1,5 +1,8 @@
 package com.example.wiprosample
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
@@ -20,5 +23,12 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.example.wiprosample", appContext.packageName)
+    }
+
+
+    @Test
+    fun loadFeeds(){
+        onView(withId(R.id.btn_reload))
+            .perform(click())
     }
 }
