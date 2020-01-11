@@ -12,9 +12,10 @@ import kotlinx.android.synthetic.main.row_feed.view.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class FeedAdapter(private val feedList: MutableList<Feed>):RecyclerView.Adapter<FeedAdapter.Holder>(),KoinComponent {
+class FeedAdapter:RecyclerView.Adapter<FeedAdapter.Holder>(),KoinComponent {
 
     private val glide:RequestManager by inject()
+    private var feedList = listOf<Feed>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(LayoutInflater.from(parent.context).inflate(R.layout.row_feed,parent,false))
@@ -30,10 +31,15 @@ class FeedAdapter(private val feedList: MutableList<Feed>):RecyclerView.Adapter<
                 textTitle.text = it.title
                 textDescription.text = it.description
                 it.imageUrl?.let {
-                    glide.load(it).into(imageFeed)
+                    glide.load(it).placeholder(R.drawable.place_holder).into(imageFeed)
                 }
             }
         }
+    }
+
+    fun setData(feedList: List<Feed>){
+        this.feedList = feedList
+        notifyDataSetChanged()
     }
 
     inner class Holder(itemView: View):RecyclerView.ViewHolder(itemView)

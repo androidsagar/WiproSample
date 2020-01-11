@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">WiproSample</string>
     <string name="something_went_wrong">Something went wrong.</string>
+    <string name="oops">Oops!</string>
+    <string name="no_data_found">No data found</string>
+    <string name="reload">Reload</string>
+    <string name="title_not_available">Title Not Available</string>
+    <string name="description_not_available">Description Not Available</string>
 </resources>

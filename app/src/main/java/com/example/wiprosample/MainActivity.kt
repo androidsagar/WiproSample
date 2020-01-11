@@ -18,24 +18,40 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel.fetchFeed(false)
+        recyclerFeed.adapter = FeedAdapter()
 
         viewModel.feedList.observe(this, Observer {
-             when(it){
-                 is ResponseWrapper.Loading -> {swipeRefresh.isRefreshing = true}
-                 is ResponseWrapper.Success->{
-                     swipeRefresh.isRefreshing = false
-                     showFeed(it.data)
-                 }
-             }
-
+            when (it) {
+                is ResponseWrapper.Loading -> {
+                    swipeRefresh.showProgress(true)
+                }
+                is ResponseWrapper.Success -> {
+                    swipeRefresh.showProgress(false)
+                    showFeed(it.data.feedList)
+                    supportActionBar?.title = it.data.title
+                }
+                is ResponseWrapper.Error -> {
+                    swipeRefresh.showProgress(false)
+                    hideViews(recyclerFeed)
+                    showViews(group_error)
+                    showToast(it.msg)
+                }
+            }
         })
 
+        btn_reload.setOnClickListener {
+            viewModel.fetchFeed(true)
+        }
+
         swipeRefresh.setOnRefreshListener {
-            viewModel.fetchFeed()
+            viewModel.fetchFeed(true)
         }
     }
 
-    private fun showFeed(data:MutableList<Feed>){
-        recyclerFeed.adapter = FeedAdapter(data)
+    private fun showFeed(data: List<Feed>) {
+        hideViews(group_error)
+        showViews(recyclerFeed)
+        (recyclerFeed.adapter as FeedAdapter).setData(data)
     }
 }
